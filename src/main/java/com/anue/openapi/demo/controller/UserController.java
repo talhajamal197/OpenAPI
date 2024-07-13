@@ -10,8 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/users")
@@ -23,6 +22,21 @@ public class UserController {
 
     @Autowired
     private AuthService authService; // Injecting AuthService
+
+    @PostMapping("/login")
+    public ResponseEntity<Map<String, Object>> login(@RequestBody Map<String, String> credentials) {
+        String username = credentials.get("username");
+        String password = credentials.get("password");
+
+        String token = authService.authenticate(username, password);
+        if (token != null) {
+            Map<String, Object> response = new HashMap<>();
+            response.put("token", token);
+            return ResponseEntity.ok(response);
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Collections.singletonMap("error", "Invalid username or password"));
+        }
+    }
 
     @GetMapping
     public ResponseEntity<List<User>> getAllUsers(@RequestHeader("Authorization") String authHeader) {

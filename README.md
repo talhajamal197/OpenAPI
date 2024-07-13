@@ -32,3 +32,73 @@ Please submit your completed challenge as a zip file or provide a link to the re
 Please include detailed instructions on how to run your application locally. This should include steps to build the application, start the application, and any other necessary steps.
 
 Good luck!
+
+# Prerequisites
+#### 1. Intall Java 17
+#### 2. Maven Install 
+
+# Commands to start
+#### mvn clean install (to install all dependencies)
+#### mvn spring-boot:run (to start app)
+#### mvn test (to run unit tests )
+#### mvn package (to publish Jar file)
+
+
+# Curls for testing :
+## Login
+curl -X POST http://localhost:8080/api/users/login \
+-H "Content-Type: application/json" \
+-d '{
+"username": "talha",
+"password": "1234"
+}'
+
+## Create user
+curl -X POST http://localhost:8080/api/users \
+-H "Content-Type: application/json" \
+-H "Authorization: 1kPIVEbgCryJTIk/I4ISXF1M1v3WROuB30JSz5YqBFM=" \
+-d '{
+"username": "marvin zonig",
+"email": "mz@gmail.com"
+}'
+## Update user
+curl -X PUT http://localhost:8080/api/users/1 \
+-H "Content-Type: application/json" \
+-H "Authorization: 1kPIVEbgCryJTIk/I4ISXF1M1v3WROuB30JSz5YqBFM=" \
+-d '{
+"username": "marvin zonig updated ",
+"email": "mz_updated@gmail.com"}'
+
+## Get user by id
+curl -X GET http://localhost:8080/api/users/1 \
+-H "Authorization: 1kPIVEbgCryJTIk/I4ISXF1M1v3WROuB30JSz5YqBFM="
+
+## Get all users
+curl -X GET http://localhost:8080/api/users \
+-H "Authorization: 1kPIVEbgCryJTIk/I4ISXF1M1v3WROuB30JSz5YqBFM="
+
+## Deleting user by id
+curl -X DELETE http://localhost:8080/api/users/1 \
+-H "Authorization: 1kPIVEbgCryJTIk/I4ISXF1M1v3WROuB30JSz5YqBFM="
+
+
+## Create role
+curl -X POST http://localhost:8080/api/roles \
+-H "Content-Type: application/json" \
+-H "Authorization: 1kPIVEbgCryJTIk/I4ISXF1M1v3WROuB30JSz5YqBFM=" \
+-d '{
+"name": "admin"
+}'
+## Get all roles
+curl -X GET http://localhost:8080/api/roles \
+-H "Authorization: 1kPIVEbgCryJTIk/I4ISXF1M1v3WROuB30JSz5YqBFM="
+
+## Assigning a role to a user
+curl -X PUT http://localhost:8080/api/users/1/roles \
+-H "Content-Type: application/json" \
+-H "Authorization: 1kPIVEbgCryJTIk/I4ISXF1M1v3WROuB30JSz5YqBFM=" \
+-d '[1]'
+
+
+
+

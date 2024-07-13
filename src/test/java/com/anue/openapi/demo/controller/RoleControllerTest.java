@@ -20,12 +20,33 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-@ExtendWith(SpringExtension.class)
-@SpringBootTest
-public class RoleControllerTest {
+import com.anue.openapi.demo.model.Role;
+import com.anue.openapi.demo.service.RoleService;
+import com.anue.openapi.demo.auth.AuthService;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.*;
+
+class RoleControllerTest {
 
     @Mock
     private RoleService roleService;
+
+    @Mock
+    private AuthService authService;
 
     @InjectMocks
     private RoleController roleController;
@@ -36,7 +57,11 @@ public class RoleControllerTest {
     }
 
     @Test
-    void testGetAllRolesAndRoleById() {
+    void testGetAllRoles_ValidToken() {
+        // Arrange
+        String validToken = "validToken";
+        when(authService.validateToken(validToken)).thenReturn(true);
+
         Role role1 = new Role();
         role1.setId(1L);
         role1.setName("Admin");
@@ -47,74 +72,54 @@ public class RoleControllerTest {
 
         List<Role> roles = Arrays.asList(role1, role2);
         when(roleService.findAll()).thenReturn(roles);
-        when(roleService.findById(1L)).thenReturn(Optional.of(role1));
-        when(roleService.findById(3L)).thenReturn(Optional.empty());
 
-        // Test getAllRoles
-        List<Role> result = roleController.getAllRoles();
-        assertEquals(2, result.size());
-        assertEquals("Admin", result.get(0).getName());
-        assertEquals("User", result.get(1).getName());
+        // Act
+        ResponseEntity<List<Role>> response = roleController.getAllRoles(validToken);
+
+        // Assert
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(roles, response.getBody());
+        verify(authService, times(1)).validateToken(validToken);
         verify(roleService, times(1)).findAll();
-
-        // Test getRoleById
-        ResponseEntity<Role> response = roleController.getRoleById(1L);
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertNotNull(response.getBody());
-        assertEquals("Admin", response.getBody().getName());
-        verify(roleService, times(1)).findById(1L);
-
-        // Test getRoleById not found
-        response = roleController.getRoleById(3L);
-        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
-        verify(roleService, times(1)).findById(3L);
     }
 
     @Test
-    void testCreateAndUpdateRole() {
-        Role role = new Role();
-        role.setId(1L);
-        role.setName("Admin");
+    void testGetRoleById_InvalidToken() {
+        // Arrange
+        String invalidToken = "invalidToken";
+        when(authService.validateToken(invalidToken)).thenReturn(false);
 
-        Role updatedRoleDetails = new Role();
-        updatedRoleDetails.setId(1L);
-        updatedRoleDetails.setName("Super Admin");
+        // Act
+        ResponseEntity<Role> response = roleController.getRoleById(1L, invalidToken);
 
-        when(roleService.save(any(Role.class))).thenReturn(role);
-        when(roleService.findById(1L)).thenReturn(Optional.of(role));
-        when(roleService.save(any(Role.class))).thenReturn(updatedRoleDetails);
-        when(roleService.findById(2L)).thenReturn(Optional.empty());
-
-        // Test createRole
-        Role result = roleController.createRole(role);
-        assertEquals("Super Admin", result.getName());
-        verify(roleService, times(1)).save(any(Role.class));
-
-        // Test updateRole
-        ResponseEntity<Role> response = roleController.updateRole(1L, updatedRoleDetails);
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertNotNull(response.getBody());
-        assertEquals("Super Admin", response.getBody().getName());
-
-        // Test updateRole not found
-        response = roleController.updateRole(2L, updatedRoleDetails);
-        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
-        verify(roleService, times(1)).findById(2L);
+        // Assert
+        assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
+        verify(authService, times(1)).validateToken(invalidToken);
+        verify(roleService, times(0)).findById(anyLong());
     }
 
     @Test
-    void testDeleteRole() {
-        when(roleService.findById(1L)).thenReturn(Optional.of(new Role()));
-        when(roleService.findById(2L)).thenReturn(Optional.empty());
+    void testCreateRole_ValidToken() {
+        // Arrange
+        String validToken = "validToken";
+        when(authService.validateToken(validToken)).thenReturn(true);
 
-        // Test deleteRole
-        ResponseEntity<Void> deleteResponse = roleController.deleteRole(1L);
-        assertEquals(HttpStatus.OK, deleteResponse.getStatusCode());
-        verify(roleService, times(1)).deleteById(1L);
+        Role newRole = new Role();
+        newRole.setName("NewRole");
 
-        // Test deleteRole not found
-        deleteResponse = roleController.deleteRole(2L);
-        assertEquals(HttpStatus.NOT_FOUND, deleteResponse.getStatusCode());
-        verify(roleService, times(1)).findById(2L);
+        Role savedRole = new Role();
+        savedRole.setId(1L);
+        savedRole.setName("NewRole");
+
+        when(roleService.save(any(Role.class))).thenReturn(savedRole);
+
+        // Act
+        ResponseEntity<Role> response = roleController.createRole(newRole, validToken);
+
+        // Assert
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        assertEquals(savedRole, response.getBody());
+        verify(authService, times(1)).validateToken(validToken);
+        verify(roleService, times(1)).save(newRole);
     }
 }

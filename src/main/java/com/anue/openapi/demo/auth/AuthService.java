@@ -1,5 +1,7 @@
 package com.anue.openapi.demo.auth;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 
 import java.nio.charset.Charset;
@@ -13,10 +15,15 @@ import java.util.Map;
 import java.util.UUID;
 
 @Service
+@PropertySource("classpath:application.properties")
 public class AuthService {
 
-    private static final String USERNAME = "talha";
-    private static final String PASSWORD = "1234";
+
+    @Value("${auth.username}")
+    private String USERNAME;
+
+    @Value("${auth.password}")
+    private String PASSWORD;
     private static final long TOKEN_VALIDITY_DURATION_MILLISECONDS = 5 * 60 * 1000; // 5 minutes
 
     private Map<String, LocalDateTime> tokenStore = new HashMap<>();
