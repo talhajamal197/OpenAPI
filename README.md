@@ -99,6 +99,7 @@ curl -X PUT http://localhost:8080/api/users/1/roles \
 -H "Authorization: 1kPIVEbgCryJTIk/I4ISXF1M1v3WROuB30JSz5YqBFM=" \
 -d '[1]'
 
-
-
-
+![img.png](img.png)
+![img_1.png](img_1.png)
+![img_2.png](img_2.png)
+![img_3.png](img_3.png)
