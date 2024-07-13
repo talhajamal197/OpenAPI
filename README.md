@@ -32,10 +32,20 @@ Please submit your completed challenge as a zip file or provide a link to the re
 Please include detailed instructions on how to run your application locally. This should include steps to build the application, start the application, and any other necessary steps.
 
 Good luck!
-
-# Prerequisites
+# Solution
+## Prerequisites
 #### 1. Intall Java 17
 #### 2. Maven Install 
+
+## Task Implemented Successfully
+
+1. The application should start without any errors. Yes
+2. The application should provide endpoints for creating, reading, updating, and deleting users and roles. Yes
+3. The application should validate incoming data before processing it. Yes
+4. The application should handle errors gracefully and return appropriate HTTP status codes and messages. Yes
+5. The application should include unit tests to verify the functionality of the service. Yes
+6. It should be possible to run the application locally. Instructions for how to do this should be included in the README. Yes
+7. (Optional) The application should provide an authentication mechanism. Yes
 
 # Commands to start
 #### mvn clean install (to install all dependencies)
@@ -103,3 +113,6 @@ curl -X PUT http://localhost:8080/api/users/1/roles \
 ![img_1.png](img_1.png)
 ![img_2.png](img_2.png)
 ![img_3.png](img_3.png)
+![img_4.png](img_4.png)
+####  return appropriate HTTP status codes
+![img_5.png](img_5.png)
