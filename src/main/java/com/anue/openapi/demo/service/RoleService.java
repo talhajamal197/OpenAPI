@@ -10,9 +10,12 @@ import java.util.Optional;
 
 @Service
 public class RoleService {
-    @Autowired
-    private RoleRepository roleRepository;
+    private final RoleRepository roleRepository;
 
+    @Autowired
+    public RoleService(RoleRepository roleRepository) {
+        this.roleRepository = roleRepository;
+    }
     public List<Role> findAll() {
         return roleRepository.findAll();
     }
