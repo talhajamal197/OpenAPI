@@ -67,10 +67,7 @@ curl -X POST http://localhost:8080/api/users/login \
 curl -X POST http://localhost:8080/api/users \
 -H "Content-Type: application/json" \
 -H "Authorization: 1kPIVEbgCryJTIk/I4ISXF1M1v3WROuB30JSz5YqBFM=" \
--d '{
-"username": "marvin zonig",
-"email": "mz@gmail.com"
-}'
+-d '{ "username": "marvin zonig", "email": "mz@gmail.com" ,"password":"123456"}'
 ## Update user
 curl -X PUT http://localhost:8080/api/users/1 \
 -H "Content-Type: application/json" \
