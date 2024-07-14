@@ -55,6 +55,11 @@ Good luck!
 
 
 # Curls for testing :
+
+## Authorization Key for testing purpose 
+Authorization: 1kPIVEbgCryJTIk/I4ISXF1M1v3WROuB30JSz5YqBFM=
+
+
 ## Login
 curl -X POST http://localhost:8080/api/users/login \
 -H "Content-Type: application/json" \
