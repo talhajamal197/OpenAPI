@@ -56,7 +56,7 @@ Good luck!
 
 # Curls for testing :
 
-## Authorization Key for testing purpose 
+## Authorization Key for testing purpose ONLY
 Authorization: 1kPIVEbgCryJTIk/I4ISXF1M1v3WROuB30JSz5YqBFM=
 
 
