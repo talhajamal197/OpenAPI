@@ -18,4 +18,5 @@ public class CustomExceptionHandler {
         response.put("status", HttpStatus.NOT_FOUND);
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
+
 }

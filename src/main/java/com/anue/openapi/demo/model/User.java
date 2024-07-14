@@ -2,6 +2,7 @@ package com.anue.openapi.demo.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,12 +18,17 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
+    @NotBlank(message = "Username is mandatory")
     private String username;
 
-    @NotBlank
+    @NotBlank(message = "Email is mandatory")
     @Email
     private String email;
+
+    @NotBlank
+    @Size(min = 6)
+    @NotBlank(message = "Password is mandatory")
+    private String password;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_roles",
