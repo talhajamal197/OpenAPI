@@ -33,6 +33,8 @@ Please include detailed instructions on how to run your application locally. Thi
 
 Good luck!
 # Solution
+## H2 Database Schema
+![img_8.png](img_8.png)
 ## Prerequisites
 #### 1. Intall Java 17
 #### 2. Maven Install 
